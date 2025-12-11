@@ -1,73 +1,18 @@
-import random
-
-def main(edgeprob, nodeamt):
-    
-    edgeprob = 1-edgeprob
-    edgeweightmax=10
-    node_from = []
-    node_to = []
-    node_weight = []
-    i=1
-    j=0
-    h=0 
-
-    while i < nodeamt:
-        node_from.append(i)
-        node_to.append(j)
-        j+=1
-        if i == node_from.count(i):
-            i+=1
-            j=0
-        node_weight.append(random.randint(1, edgeweightmax))
-
+import random # цей файл є remnant of the past, тут раніше був код на 90 рядків, бо я пайтон тоді ще взагалі не знав. зараз тут все охайно переписано
+def main(edgeprob, nodeamt): 
+    edgeweightmax = 20 # максимальна вага ребра, можна змінювати
+    matrix = [[0 for x in range(nodeamt)] for y in range(nodeamt)]
     i=0
     j=0
-    h=len(node_from)
-    node_f_res = []
-    node_t_res = []
-    node_w_res = []
 
-
-
-    while i<h:
-        j=random.random()
-        if j > edgeprob:
-            node_f_res.append(node_from[i])
-            node_t_res.append(node_to[i])
-            node_w_res.append(node_weight[i]) 
+    while i!=nodeamt: # робимо повний граф
+        j=0
+        while j!=i:
+            if random.random() < edgeprob: # додаємо шанс на недодання ребра в граф
+                matrix[j][i]=random.randint(1,edgeweightmax) # якщо ребро додане, то даємо йому рандомну вагу
+                matrix[i][j]=matrix[j][i] # симетрично відображаємо
+            j+=1
         i+=1
+    return(matrix)
 
-    i=0
-    j=0
-    h=len(node_f_res)
-    node_from = []
-    node_to = []
-    node_weight = []
-
-    while i<h:
-        node_from.append(node_f_res[i])
-        node_to.append(node_t_res[i])
-        node_from.append(node_t_res[i])
-        node_to.append(node_f_res[i])
-        node_weight.append(node_w_res[i])
-        node_weight.append(node_w_res[i])
-        i+=1
-
-
-    i=0
-    j=0
-    h=len(node_from)
-    node_f_res = []
-    node_t_res = []
-    node_w_res = []
-
-
-    zipped = zip(node_from, node_to, node_weight)
-    sortedl = sorted(zipped)
-    a, b, c = zip(*sortedl)
-    node_from = list(a)
-    node_to = list(b)
-    node_weight = list(c)
-
-    return node_from, node_to, node_weight
 
